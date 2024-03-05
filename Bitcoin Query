@@ -1,0 +1,23 @@
+import sys
+import requests
+#install requests via pip: pip install requests 
+#make sure user inputs just ONE number
+if len(sys.argv) == 2:
+    try:
+        amount = float(sys.argv[1])
+    except:
+        sys.exit("Command-line argument is not a number")
+else:
+    sys.exit("Missing command-line argument")
+
+#quering the information as a web browser, making it readeable, looking for the pair Key-Value, operating.
+try:
+    r = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+    #convert r in an avaible dictionary with json: var.json()
+    response = r.json()
+    bitcoin = response["bpi"]["USD"]["rate_float"]
+    total = bitcoin * amount
+    #printing number with "," to the thousands and 4 decimals
+    print(f"${total:,.4f}")
+except requests.RequestException:
+    sys.exit("Request_Exception")
